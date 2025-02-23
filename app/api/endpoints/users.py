@@ -33,7 +33,7 @@ async def login(
     }
 
 
-@users_router.post("/auth/refresh")
+@users_router.post("/auth/refresh", tags=['auth'])
 async def refresh_token(refresh_token: str):
     try:
         payload = jwt.decode(refresh_token, settings.secret, algorithms=[settings.algorithm])
