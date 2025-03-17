@@ -10,7 +10,7 @@ from app.utils.users import create_access_token, create_refresh_token
 from app.core.user import fastapi_users, get_user_manager, jwt_auth_backend
 from app.schemas.users import UserCreate, UserGet, UserUpdate
 from app.core.db import get_async_session
-from app.database.users import get_user
+from app.database.users import user_crud
 from app.core.config import settings
 
 users_router = APIRouter()
@@ -23,7 +23,7 @@ async def login(
     user_manager: BaseUserManager = Depends(get_user_manager),
 ):
     """Эндпоинт для логина пользователя и выдачи токенов."""
-    user = await get_user(form_data.username, session)
+    user = await user_crud.get_user(form_data.username, session)
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     return {

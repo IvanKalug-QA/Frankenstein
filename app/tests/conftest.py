@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.core.base import Base, User
 from app.schemas.users import UserCreate
-from app.database.users import get_user
+from app.database.users import user_crud
 from app.core.db import get_async_session
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -59,7 +59,7 @@ async def get_or_register_user(
         get_user_schema: UserCreate,
         async_client: AsyncClient,
         async_session: AsyncSession):
-    user: User | None = await get_user(
+    user: User | None = await user_crud.get_user(
         get_user_schema.username, async_session)
     auth_data: dict[str, str] = dict()
     if user is None:
